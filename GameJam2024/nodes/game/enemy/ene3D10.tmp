@@ -1,0 +1,141 @@
+[gd_scene load_steps=29 format=3 uid="uid://ctk6d6jftuli"]
+
+[ext_resource type="Script" path="res://nodes/game/enemy/enemy.gd" id="1_3e0gm"]
+[ext_resource type="Texture2D" uid="uid://b1jnnplrg7324" path="res://graphics/enemy.png" id="2_0jyah"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Weapon.gd" id="2_ohuto"]
+[ext_resource type="Script" path="res://nodes/game/enemy/CharacterStateMachine.gd" id="4_wumq1"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Walk.gd" id="5_erox1"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Follow.gd" id="6_btcq5"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Death.gd" id="7_k8gxj"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Attack.gd" id="8_n0xue"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Air.gd" id="9_78sg5"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_77bk4"]
+radius = 8.0
+height = 22.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0a61"]
+size = Vector2(31, 33)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c1o33"]
+size = Vector2(171, 46)
+
+[sub_resource type="Animation" id="Animation_cg20u"]
+resource_name = "Air"
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flippendo/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ixnka"]
+resource_name = "Attack"
+length = 0.2
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterStateMachine/Attack")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"attack_finished"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Flippendo/Weapon:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Flippendo/Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_x38wa"]
+resource_name = "Death"
+length = 0.4
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterStateMachine/Death")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"dead"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Flippendo/Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_0mnuj"]
+resource_name = "Walk"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flippendo/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sbs8f"]
+_data = {
+"Air": SubResource("Animation_cg20u"),
+"Attack": SubResource("Animation_ixnka"),
+"Death": SubResource("Animation_x38wa"),
+"Walk": SubResource("Animation_0mnuj")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r7jwi"]
+animation = &"Air"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e7pyx"]
+animation = &"Att

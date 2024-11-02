@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpcoh4boli6u6"]
+
+[ext_resource type="Script" path="res://nodes/UI/Transitioner/TransitionButton.gd" id="1_e4xye"]
+
+[node name="CheckButton" type="CheckButton"]
+offset_right = 44.0
+offset_bottom = 24.0
+script = ExtResource("1_e4xye")
+
+[connection signal="toggled" from="." to="." method="_on_toggled"]

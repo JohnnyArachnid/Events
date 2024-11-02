@@ -1,0 +1,278 @@
+[gd_scene load_steps=30 format=3 uid="uid://ctk6d6jftuli"]
+
+[ext_resource type="Script" path="res://nodes/game/enemy/enemy.gd" id="1_3e0gm"]
+[ext_resource type="Texture2D" uid="uid://b1jnnplrg7324" path="res://graphics/enemy.png" id="2_0jyah"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Weapon.gd" id="2_ohuto"]
+[ext_resource type="Script" path="res://nodes/game/enemy/CharacterStateMachine.gd" id="4_wumq1"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Walk.gd" id="5_erox1"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Follow.gd" id="6_btcq5"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Death.gd" id="7_k8gxj"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Attack.gd" id="8_n0xue"]
+[ext_resource type="Script" path="res://nodes/game/enemy/Air.gd" id="9_78sg5"]
+[ext_resource type="AudioStream" uid="uid://lwk1ywe5t8u7" path="res://data/audio/enemy_attack_music.mp3" id="9_uuolq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_77bk4"]
+radius = 8.0
+height = 22.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0a61"]
+size = Vector2(31, 33)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c1o33"]
+size = Vector2(443, 46)
+
+[sub_resource type="Animation" id="Animation_cg20u"]
+resource_name = "Air"
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flippendo/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ixnka"]
+resource_name = "Attack"
+length = 0.2
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterStateMachine/Attack")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"attack_finished"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Flippendo/Weapon:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Flippendo/Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_x38wa"]
+resource_name = "Death"
+length = 0.4
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterStateMachine/Death")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"dead"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Flippendo/Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_0mnuj"]
+resource_name = "Walk"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flippendo/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sbs8f"]
+_data = {
+"Air": SubResource("Animation_cg20u"),
+"Attack": SubResource("Animation_ixnka"),
+"Death": SubResource("Animation_x38wa"),
+"Walk": SubResource("Animation_0mnuj")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r7jwi"]
+animation = &"Air"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e7pyx"]
+animation = &"Attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mqphg"]
+animation = &"Death"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ji8jj"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mrnbc"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ffalm"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y1xta"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mnw7b"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bjiuf"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rnv8h"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_207g3"]
+states/Air/node = SubResource("AnimationNodeAnimation_r7jwi")
+states/Air/position = Vector2(436, 37)
+states/Attack/node = SubResource("AnimationNodeAnimation_e7pyx")
+states/Attack/position = Vector2(436, 191)
+states/Death/node = SubResource("AnimationNodeAnimation_mqphg")
+states/Death/position = Vector2(571, 100)
+states/Walk/node = SubResource("AnimationNodeAnimation_ji8jj")
+states/Walk/position = Vector2(343, 100)
+transitions = ["Start", "Walk", SubResource("AnimationNodeStateMachineTransition_mrnbc"), "Walk", "Air", SubResource("AnimationNodeStateMachineTransition_ffalm"), "Air", "Walk", SubResource("AnimationNodeStateMachineTransition_y1xta"), "Walk", "Attack", SubResource("AnimationNodeStateMachineTransition_mnw7b"), "Attack", "Walk", SubResource("AnimationNodeStateMachineTransition_bjiuf"), "Walk", "Death", SubResource("AnimationNodeStateMachineTransition_rnv8h")]
+graph_offset = Vector2(-121, -50)
+
+[node name="enemy" type="CharacterBody2D" node_paths=PackedStringArray("character_state_machine", "floorDetect", "wallDetect", "to_be_flipped")]
+collision_layer = 12
+script = ExtResource("1_3e0gm")
+character_state_machine = NodePath("CharacterStateMachine")
+floorDetect = NodePath("Flippendo/floorDetector")
+wallDetect = NodePath("Flippendo/wallDetector")
+to_be_flipped = NodePath("Flippendo")
+
+[node name="DEBUG_STATE_LABEL" type="Label" parent="."]
+offset_left = -25.0
+offset_top = -32.0
+offset_right = 26.0
+offset_bottom = -9.0
+text = "nnnnnn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_77bk4")
+
+[node name="Flippendo" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Flippendo"]
+texture = ExtResource("2_0jyah")
+hframes = 3
+vframes = 3
+frame = 3
+
+[node name="Weapon" type="Area2D" parent="Flippendo"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_ohuto")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Flippendo/Weapon"]
+position = Vector2(7.5, -5.5)
+shape = SubResource("RectangleShape2D_l0a61")
+
+[node name="Detection" type="Area2D" parent="Flippendo"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Flippendo/Detection"]
+position = Vector2(213.5, -12)
+shape = SubResource("RectangleShape2D_c1o33")
+
+[node name="floorDetector" type="RayCast2D" parent="Flippendo"]
+target_position = Vector2(20, 12)
+
+[node name="wallDetector" type="RayCast2D" parent="Flippendo"]
+target_position = Vector2(20, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_sbs8f")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_sbs8f")
+}
+tree_root = SubResource("AnimationNodeStateMachine_207g3")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "animation_tree", "current_state")]
+script = ExtResource("4_wumq1")
+character = NodePath("..")
+animation_tree = NodePath("../AnimationTree")
+current_state = NodePath("Walk")
+
+[node name="Walk" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("air_state", "attack_state")]
+script = ExtResource("5_erox1")
+air_state = NodePath("../Air")
+attack_state = NodePath("../Attack")
+
+[node name="Timer" type="Timer" parent="CharacterStateMachine/Walk"]
+wait_time = 0.3
+autostart = true
+
+[node name="Air" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("ground_state")]
+script = ExtResource("9_78sg5")
+ground_state = NodePath("../Walk")
+
+[node name="Follow" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("air_state", "ground_state", "attack_state")]
+script = ExtResource("6_btcq5")
+air_state = NodePath("../Air")
+ground_state = NodePath("../Walk")
+attack_state = NodePath("../Attack")
+
+[node name="Death" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("7_k8gxj")
+can_move = false
+
+[node name="Attack" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("follow_state")]
+script = ExtResource("8_n0xue")
+follow_state = NodePath("../Follow")
+can_move = false
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_uuolq")
+volume_db = -30.0
+
+[connection signal="body_entered" from="Flippendo/Weapon" to="Flippendo/Weapon" method="_on_body_entered"]
+[connection signal="body_entered" from="Flippendo/Detection" to="CharacterStateMachine/Follow" method="_on_detection_body_entered"]
+[connection signal="timeout" from="CharacterStateMachine/Walk/Timer" to="CharacterStateMachine/Walk" method="_on_timer_timeout"]

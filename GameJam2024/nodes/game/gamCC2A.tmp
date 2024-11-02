@@ -1,0 +1,81 @@
+[gd_scene load_steps=15 format=3 uid="uid://v4xpc5ba5wck"]
+
+[ext_resource type="Script" path="res://nodes/game/game.gd" id="1_fiell"]
+[ext_resource type="PackedScene" uid="uid://cn4xvx1eaogcf" path="res://nodes/game/lvl/lvl.tscn" id="2_72e12"]
+[ext_resource type="PackedScene" uid="uid://5fw75hfjyana" path="res://nodes/game/player/player.tscn" id="3_syob8"]
+[ext_resource type="PackedScene" uid="uid://bt8luy8cx0ok" path="res://nodes/elements/blackHole/black_hole.tscn" id="4_gwnpj"]
+[ext_resource type="PackedScene" uid="uid://dknhxv0icp7v2" path="res://nodes/UI/PauseMenu/pause_menu.tscn" id="4_mudnx"]
+[ext_resource type="PackedScene" uid="uid://bet3j0aw7xm08" path="res://nodes/elements/bulding_elements/button.tscn" id="5_hn1ax"]
+[ext_resource type="PackedScene" uid="uid://vom0xmrggqmq" path="res://nodes/elements/bulding_elements/door.tscn" id="6_rqouq"]
+[ext_resource type="PackedScene" uid="uid://drg7pp148de82" path="res://nodes/elements/bulding_elements/lever.tscn" id="7_qbqrn"]
+[ext_resource type="PackedScene" uid="uid://db6g0h0a4bxo3" path="res://nodes/elements/bulding_elements/moving_platform.tscn" id="8_jop3e"]
+[ext_resource type="PackedScene" uid="uid://bvv5isyge0rnd" path="res://nodes/elements/bulding_elements/moving_platform_lever.tscn" id="9_mx861"]
+[ext_resource type="PackedScene" uid="uid://dpjfdk0evcadr" path="res://nodes/elements/bulding_elements/one_way_platform.tscn" id="10_7tncs"]
+[ext_resource type="PackedScene" uid="uid://dxy2mm6bevgso" path="res://nodes/elements/water/Water_Body.tscn" id="11_k4hoq"]
+[ext_resource type="PackedScene" uid="uid://cpcoh4boli6u6" path="res://nodes/UI/Transitioner/transButton.tscn" id="12_u58jv"]
+[ext_resource type="PackedScene" uid="uid://crsfn8cuddk1j" path="res://nodes/UI/Transitioner/transitioner.tscn" id="13_5of7b"]
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("transition_button", "end_screen", "player")]
+process_mode = 1
+script = ExtResource("1_fiell")
+transition_button = NodePath("TransitionerCanvasLayer/TransButton")
+end_screen = NodePath("EndScreenCanvasLayer")
+player = NodePath("player")
+
+[node name="TransitionerCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Transitioner" parent="TransitionerCanvasLayer" instance=ExtResource("13_5of7b")]
+
+[node name="TransButton" parent="TransitionerCanvasLayer" node_paths=PackedStringArray("transitioner") instance=ExtResource("12_u58jv")]
+transitioner = NodePath("../Transitioner")
+
+[node name="EndScreenCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="EndText" type="Label" parent="EndScreenCanvasLayer"]
+offset_right = 1152.0
+offset_bottom = 648.0
+size_flags_horizontal = 4
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PauseScreenCanvasLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="PauseMenu" parent="PauseScreenCanvasLayer" node_paths=PackedStringArray("game_manager") instance=ExtResource("4_mudnx")]
+game_manager = NodePath("../..")
+
+[node name="Lvl" parent="." instance=ExtResource("2_72e12")]
+position = Vector2(17, 117)
+
+[node name="Water_Body" parent="." instance=ExtResource("11_k4hoq")]
+position = Vector2(832, 280)
+
+[node name="player" parent="." instance=ExtResource("3_syob8")]
+light_mask = 2
+position = Vector2(348, 521)
+
+[node name="BlackHole" parent="." instance=ExtResource("4_gwnpj")]
+position = Vector2(96, 72)
+
+[node name="button" parent="." node_paths=PackedStringArray("interactive") instance=ExtResource("5_hn1ax")]
+position = Vector2(320, 96.0001)
+interactive = NodePath("../door")
+
+[node name="door" parent="." instance=ExtResource("6_rqouq")]
+position = Vector2(496, 304)
+
+[node name="lever" parent="." node_paths=PackedStringArray("interactive") instance=ExtResource("7_qbqrn")]
+position = Vector2(1032, 184)
+collision_layer = 12
+collision_mask = 0
+interactive = NodePath("../moving_platform_lever")
+
+[node name="moving_platform" parent="." instance=ExtResource("8_jop3e")]
+position = Vector2(216, 424)
+
+[node name="moving_platform_lever" parent="." instance=ExtResource("9_mx861")]
+position = Vector2(800, 96)
+
+[node name="one_way_platform" parent="." instance=ExtResource("10_7tncs")]
+position = Vector2(728, 500)

@@ -1,0 +1,47 @@
+[gd_scene load_steps=11 format=3 uid="uid://v4xpc5ba5wck"]
+
+[ext_resource type="Script" path="res://nodes/game/game.gd" id="1_fiell"]
+[ext_resource type="PackedScene" uid="uid://cn4xvx1eaogcf" path="res://nodes/game/lvl/lvl.tscn" id="2_72e12"]
+[ext_resource type="PackedScene" uid="uid://5fw75hfjyana" path="res://nodes/game/player/player.tscn" id="3_syob8"]
+[ext_resource type="PackedScene" uid="uid://bt8luy8cx0ok" path="res://nodes/elements/blackHole/black_hole.tscn" id="4_gwnpj"]
+[ext_resource type="PackedScene" uid="uid://bet3j0aw7xm08" path="res://nodes/elements/bulding_elements/button.tscn" id="5_hn1ax"]
+[ext_resource type="PackedScene" uid="uid://vom0xmrggqmq" path="res://nodes/elements/bulding_elements/door.tscn" id="6_rqouq"]
+[ext_resource type="PackedScene" uid="uid://drg7pp148de82" path="res://nodes/elements/bulding_elements/lever.tscn" id="7_qbqrn"]
+[ext_resource type="PackedScene" uid="uid://db6g0h0a4bxo3" path="res://nodes/elements/bulding_elements/moving_platform.tscn" id="8_jop3e"]
+[ext_resource type="PackedScene" uid="uid://bvv5isyge0rnd" path="res://nodes/elements/bulding_elements/moving_platform_lever.tscn" id="9_mx861"]
+[ext_resource type="PackedScene" uid="uid://dpjfdk0evcadr" path="res://nodes/elements/bulding_elements/one_way_platform.tscn" id="10_7tncs"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_fiell")
+
+[node name="Lvl" parent="." instance=ExtResource("2_72e12")]
+position = Vector2(17, 117)
+
+[node name="player" parent="." instance=ExtResource("3_syob8")]
+light_mask = 2
+position = Vector2(348, 521)
+
+[node name="BlackHole" parent="." instance=ExtResource("4_gwnpj")]
+position = Vector2(96, 72)
+
+[node name="button" parent="." node_paths=PackedStringArray("interactive") instance=ExtResource("5_hn1ax")]
+position = Vector2(320, 96.0001)
+interactive = NodePath("../door")
+
+[node name="door" parent="." instance=ExtResource("6_rqouq")]
+position = Vector2(496, 304)
+
+[node name="lever" parent="." node_paths=PackedStringArray("interactive") instance=ExtResource("7_qbqrn")]
+position = Vector2(1032, 184)
+collision_layer = 12
+collision_mask = 0
+interactive = NodePath("../moving_platform_lever")
+
+[node name="moving_platform" parent="." instance=ExtResource("8_jop3e")]
+position = Vector2(216, 424)
+
+[node name="moving_platform_lever" parent="." instance=ExtResource("9_mx861")]
+position = Vector2(800, 96)
+
+[node name="one_way_platform" parent="." instance=ExtResource("10_7tncs")]
+position = Vector2(728, 500)
